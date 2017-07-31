@@ -146,11 +146,15 @@ func load(configurationPath string, parametersPath string, mapping map[string]in
 		log.Fatalf("error: %v", err)
 	}
 
+	for k := range mapping {
+		if _, ok := conf[k]; !ok {
+			return conf, fmt.Errorf("Configuration error: %v node not found", k)
+		}
+	}
 	for k, v := range conf {
-
 		var moduleConf, moduleErr = mapping[k]
 		if !moduleErr {
-			color.Yellow("Ignorando configuracion de %v", k)
+			color.Yellow("Ignoring configuration for %v", k)
 			//return nil, err
 		} else {
 
